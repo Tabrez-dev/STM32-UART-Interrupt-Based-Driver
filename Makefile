@@ -8,7 +8,7 @@ LDFLAGS ?= -Tlink.ld -nostartfiles -nostdlib --specs nano.specs -lc -lgcc -Wl,--
 
 EXTRA_CFLAGS ?=
 
-SOURCES = main.c syscalls.c hal.c
+SOURCES = main.c syscalls.c hal.c uart.c
 SOURCES += cmsis_f0/Source/Templates/gcc/startup_stm32f072xb.s
 
 build: firmware.bin

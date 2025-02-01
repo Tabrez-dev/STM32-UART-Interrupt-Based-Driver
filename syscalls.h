@@ -2,7 +2,7 @@
 
 #include <sys/stat.h>
 #include "hal.h"
-
+#include "uart.h"
 int _fstat(int fd, struct stat *st);
 void *_sbrk(int incr);
 int _open(const char *path);

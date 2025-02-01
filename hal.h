@@ -24,15 +24,4 @@ void spin(volatile uint32_t count);
 void gpio_set_mode(uint16_t pin, uint8_t mode);
 void gpioSetAF(uint16_t pin, uint8_t afNum);
 void gpio_write(uint16_t pin, bool val);
-void uartInit(USART_TypeDef *uart, unsigned long baud);
-int uartReadReady(USART_TypeDef *uart);
-uint8_t uartReadByte(USART_TypeDef *uart);
-void uartWriteByte(USART_TypeDef *uart, uint8_t byte);
-void uartWriteBuf(USART_TypeDef *uart, char *buf, size_t len);
-
-extern volatile uint8_t receivedData;
-extern volatile bool dataReceivedFlag;
-extern volatile uint8_t txBuffer[256];  // Buffer for data to be transmitted
-extern volatile uint8_t txHead;   // Index of the next byte to send
-extern volatile uint8_t txTail;      // Index of the byte to be sent (TXE interrupt)
 
