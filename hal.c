@@ -6,6 +6,9 @@ STEPS:
     2. Configure UART
     3. In ISR do operations
 */
+volatile uint8_t txBuffer[256];  // Buffer for data to be transmitted
+volatile uint8_t txHead=0;      // Index of the next byte to send
+volatile uint8_t txTail=0;      // Index of the byte to be sent (TXE interrupt)
 
 volatile uint8_t receivedData = 0;
 volatile bool dataReceivedFlag = false;
@@ -77,10 +80,17 @@ void uartWriteByte(USART_TypeDef *uart, uint8_t byte) {
     uart->TDR = byte;
 }
 
-void uartWriteBuf(USART_TypeDef *uart, char *buf, size_t len) {
-    while (len-- > 0) {
-        uartWriteByte(uart, *(uint8_t *)buf++);
-    }
+
+void uartWriteBuf(USART_TypeDef *uart, char *buf, size_t len){
+
+ for(size_t i=0;i<len;i++){
+	uint8_t nextHead=(txHead+1)%sizeof(txBuffer);
+	while(nextHead==txTail);//Ensures buffer does not overflow
+	txBuffer[txHead]=buf[i];
+	txHead=nextHead;
+  }
+  //Enable TXE interrupt only when new data is added
+  uart->CR1 |= BIT(7);
 }
 
 
@@ -90,6 +100,16 @@ void USART1_IRQHandler(void){
 		receivedData= uartReadByte(UART1);  
 		dataReceivedFlag=true;//set flag for main loop
 	}
-
+	//Handle tx interrupt
+	if(UART1->ISR & BIT(7)){
+		if(txHead!=txTail){
+			UART1->TDR=txBuffer[txTail];
+			txTail=(txTail+1) %sizeof(txBuffer);
+		}else{
+			//No Data to send disable TXE interrupt
+			UART1->CR1 &= ~BIT(7);
+		}
+	
+	}
 }
 
