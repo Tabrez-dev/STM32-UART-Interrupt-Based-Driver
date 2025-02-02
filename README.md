@@ -90,6 +90,11 @@ This process configures the UART for communication, ensuring that the TX and RX 
 
 5. **Monitor the Output**: After flashing the firmware, use a serial terminal program like **Minicom** to view the UART output from your STM32 microcontroller.
 
+The data is transimitted to the terminal after recieving 5 bytes of data.
+
+![Screenshot from 2025-02-02 07-03-27](https://github.com/user-attachments/assets/b8a8370e-8512-4191-8d7f-6b12c11c4488)
+
+
 ### Makefile Details:
 
 - **CFLAGS**: This sets the compiler flags for the build. It includes optimization settings, warning flags, debugging options, and include paths.
