@@ -121,3 +121,7 @@ To clean up all generated files (such as ELF, binary, and script files), run:
 ```bash
 make clean
 ```
+
+### DIY
+
+To use `printf` for UART output instead of directly writing data byte-by-byte, you can modify the `syscalls.c` file to implement the `_write` function. This function is called by the standard library when `printf` is used. In the provided code, the `_write` function is configured to call `uartWriteBuf` to transmit data. If you wish to use `printf`, simply ensure that the `syscalls.c` file is properly included in your project, and `uartWriteBuf` is correctly implemented to send data over UART. By doing this, you can use the standard `printf` function for formatted output, which will internally call your UART driver to transmit the data over UART.
