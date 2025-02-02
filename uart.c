@@ -78,16 +78,44 @@ static inline uint8_t uartReadByte(USART_TypeDef *uart){
 
 void USART1_IRQHandler(void){
 
+	/*
+	// Option 1: Discard new data if buffer is full(simple use case this works)
 	if (UART1->ISR & BIT(5)) {  // RXNE flag (Received data)
 		uint8_t nextHead = (uint8_t)(rxHead + 1) % UART_RX_BUFFER_SIZE;  // Calculate the next head position
+
 		if (nextHead != rxTail) {  // Ensure the buffer is not full
 			rxBuffer[rxHead] = (uint8_t)(UART1->RDR & 0xFF);  // Read received byte
 			rxHead = nextHead;  // Update head pointer
-			dataReceivedFlag = true;             // Set flag to process data in main loop
+
+			// Check if we have received a full packet
+			if ((rxHead - rxTail + UART_RX_BUFFER_SIZE) % UART_RX_BUFFER_SIZE >= PACKET_SIZE) {
+				dataReceivedFlag = true;  // Signal main loop to process the packet
+			}
 		} else {
-			// Handle buffer overflow (optional, you can implement overwriting or dropping data)
+			// Buffer is full, discard the new byte  
+			(void)UART1->RDR;  // Read and discard to clear RXNE flag
 		}
-	}	
+	}
+	*/
+
+	// Option 2: Overwrite old data when buffer is full(useful in continous streams) 
+	if (UART1->ISR & BIT(5)){  // RXNE flag (Received data available)
+		uint8_t nextHead = (uint8_t)(rxHead + 1) % UART_RX_BUFFER_SIZE;  // Calculate the next buffer position
+
+		if (nextHead == rxTail) {  
+			// Buffer is full, overwrite the oldest data by moving rxTail forward
+			rxTail = (uint8_t)(rxTail + 1) % UART_RX_BUFFER_SIZE;  
+		}
+
+		// Store the new byte in the buffer
+		rxBuffer[rxHead] = (uint8_t)(UART1->RDR & 0xFF);  
+		rxHead = nextHead;  // Update head pointer
+
+		// Check if we have received a full packet
+		if ((rxHead - rxTail + UART_RX_BUFFER_SIZE) % UART_RX_BUFFER_SIZE >= PACKET_SIZE) {  
+			dataReceivedFlag = true;  // Signal main loop to process the packet
+		}
+	}
 
 
 	//Handle tx interrupt

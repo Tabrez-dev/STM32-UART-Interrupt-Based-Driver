@@ -3,7 +3,7 @@
 // UART buffer size
 #define UART_TX_BUFFER_SIZE 256
 #define UART_RX_BUFFER_SIZE  256  
-
+#define PACKET_SIZE 5
 extern volatile uint8_t receivedData;
 extern volatile bool dataReceivedFlag;
 
