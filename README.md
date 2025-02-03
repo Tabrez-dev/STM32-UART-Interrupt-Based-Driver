@@ -3,7 +3,9 @@
 
 This repository implements a UART device driver for STM32F072RBT6-DISCO using interrupt-based methods for both transmit (TX) and receive (RX) operations. The driver is optimized using circular buffers to manage data efficiently and prevent data loss. It focuses on performance and reliability, making it suitable for embedded systems that require UART communication.
 
-## Features
+<details>
+  <summary><h2>Features</h2></summary>
+  
 - **Interrupt-based UART communication** for both TX and RX.
 - **Circular buffer management** for efficient handling of data, reducing overhead and preventing buffer overflow.
 - **GPIO initialization for Alternate Function (AF) mode** to configure UART pins (TX/RX).
@@ -12,8 +14,11 @@ This repository implements a UART device driver for STM32F072RBT6-DISCO using in
   - `hal.c` and `hal.h`: Low-level hardware abstraction layer for STM32 peripherals.
   - `uart.c` and `uart.h`: UART-specific driver functions.
   - `main.c`: Application logic for managing UART communication.
+  
+</details>
 
-## Technical Details
+<details>
+  <summary><h2>Technical Details</h2></summary>
 
 ### Circular Buffers for RX and TX
 
@@ -69,7 +74,10 @@ The `uartInit` function configures the UART peripheral with the necessary settin
 
 This process configures the UART for communication, ensuring that the TX and RX pins are properly set for alternate function mode and that the UART interrupts are enabled for efficient data transfer.
 
-## How to Build and Run
+</details>
+
+<details>
+  <summary><h2>How to build and run</h2></summary>
 
 1. **Install Prerequisites**: Ensure that you have the necessary tools installed for ARM development. This includes `arm-none-eabi-gcc`, `make`, and other related tools.
 
@@ -98,9 +106,11 @@ The data is transimitted to the terminal after recieving 5 bytes of data.
 
 ![Screenshot from 2025-02-02 07-03-27](https://github.com/user-attachments/assets/b8a8370e-8512-4191-8d7f-6b12c11c4488)
 
+</details>
 
-### Makefile Details:
-
+<details>
+  <summary><h2>Makefile Details</h2></summary>
+  
 - **CFLAGS**: This sets the compiler flags for the build. It includes optimization settings, warning flags, debugging options, and include paths.
   
 - **LDFLAGS**: This specifies the linker flags. It includes the linker script, the library options, and optimization for unused sections.
@@ -125,7 +135,11 @@ To clean up all generated files (such as ELF, binary, and script files), run:
 ```bash
 make clean
 ```
+</details>
 
-### DIY
-
+<details>
+  <summary><h2>DIY</h2></summary>
+  
 To use `printf` for UART output instead of directly writing data byte-by-byte, you can modify the `syscalls.c` file to implement the `_write` function. This function is called by the standard library when `printf` is used. In the provided code, the `_write` function is configured to call `uartWriteBuf` to transmit data. If you wish to use `printf`, simply ensure that the `syscalls.c` file is properly included in your project, and `uartWriteBuf` is correctly implemented to send data over UART. By doing this, you can use the standard `printf` function for formatted output, which will internally call your UART driver to transmit the data over UART.
+  
+</details>
