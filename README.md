@@ -47,6 +47,9 @@ The UART communication relies on specific GPIO pins configured for **Alternate F
 
 2. **Set GPIO Pin to Alternate Function Mode**: The function `gpioSetAF` configures the GPIO pin to the correct alternate function mode required for UART. It writes the appropriate Alternate Function (AF) number to the GPIO's AFR (Alternate Function Register). Depending on whether the pin number is less than 8 or greater than or equal to 8, the corresponding half of the `AFR` register is modified to select the correct AF function. This allows the UART signal to be routed through the selected pin.
 
+![image](https://github.com/user-attachments/assets/8b1593e6-a257-43dd-aa51-d1f31501fb63)
+
+
 ### UART Initialization
 
 The `uartInit` function configures the UART peripheral with the necessary settings for communication. The following steps outline the process of initializing the UART:
