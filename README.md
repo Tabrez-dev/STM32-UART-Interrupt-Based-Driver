@@ -49,6 +49,7 @@ The UART communication relies on specific GPIO pins configured for **Alternate F
 
 ![image](https://github.com/user-attachments/assets/8b1593e6-a257-43dd-aa51-d1f31501fb63)
 
+PA9 and PA10 were used in AF1 mode according to the mapping provided in this document: https://www.st.com/resource/en/datasheet/stm32f072rb.pdf
 
 ### UART Initialization
 
